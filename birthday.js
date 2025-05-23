@@ -26,16 +26,14 @@ function draw() {
     if (now >= targetDate) {
       timerEnded = true;
       countdownDiv.hide();
-      // No reload, just start fireworks
     } else {
-      // Show countdown timer
       let diff = targetDate - now;
       let hours = nf(floor((diff / (1000 * 60 * 60)) % 24), 2);
       let minutes = nf(floor((diff / (1000 * 60)) % 60), 2);
       let seconds = nf(floor((diff / 1000) % 60), 2);
 
       countdownDiv.html(`Countdown to birthday:<br>${hours}:${minutes}:${seconds}`);
-      return; // skip fireworks animation until timer ends
+      return;
     }
   }
 
