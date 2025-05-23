@@ -4,7 +4,7 @@ let force;
 let timerEnded = false;
 
 let now = new Date();
-let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 15, 0); // 10:15 PM today
+let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 25, 0); // 10:15 PM today
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -21,7 +21,9 @@ function draw() {
     if (now >= targetDate) {
       timerEnded = true;
       countdownDiv.hide();
-      location.reload(); // Refresh to restart animation
+      setTimeout(() => {
+    location.reload();
+  }, 100); // Refresh once, shortly after hiding
       return;
     }
 
