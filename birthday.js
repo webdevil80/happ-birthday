@@ -1,6 +1,6 @@
 let force;
 let firework = [];
-let targetDate = new Date("2025-05-24T00:00:00"); // set your desired date/time
+let targetDate = new Date("2025-05-23T21:58:00"); // set your desired date/time
 let countdownDiv;
 let bgm;
 
