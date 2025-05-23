@@ -32,7 +32,7 @@ function draw() {
       let minutes = nf(floor((diff / (1000 * 60)) % 60), 2);
       let seconds = nf(floor((diff / 1000) % 60), 2);
 
-      countdownDiv.html(`Countdown to birthday:<br>${hours}:${minutes}:${seconds}`);
+      countdownDiv.html(`Have a curios till 12 🤪<br>${hours}:${minutes}:${seconds}`);
       return;
     }
   }
@@ -54,7 +54,7 @@ function draw() {
   textSize(30);
   textAlign(CENTER);
   fill(255);
-  text("Happy Birthday\nBirthday name🥰 Stay happy forever", width / 2, height / 2);
+  text("Happy Birthday\n Shivani🥰\n Stay happy forever!", width / 2, height / 2);
 }
 
 function mouseClicked() {
