@@ -5,7 +5,7 @@ let timerEnded = false;
 
 function getTargetDate() {
   let now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 45, 0); // 10:35 PM today
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 42, 0); // 10:35 PM today
 }
 
 let targetDate = getTargetDate();
