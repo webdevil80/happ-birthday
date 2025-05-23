@@ -1,21 +1,18 @@
+let countdownDiv;
+let targetDate = new Date(2025, 4, 23, 21, 58, 0); // May 23, 2025, 21:58:00 (local time)
 let force;
 let firework = [];
-let targetDate = new Date("2025-05-23T21:58:00"); // set your desired date/time
-let countdownDiv;
-let bgm;
+let timerEnded = false;
 
-function preload() {
-  bgm = loadSound("bgm.mp3"); // your audio file in same folder
-}
-
-function setup(){
+function setup() {
   createCanvas(windowWidth, windowHeight);
   force = createVector(0, 0.2);
   background(0);
   countdownDiv = select('#timer');
+  setInterval(updateCountdown, 1000); // Call every second
 }
 
-function draw(){
+function updateCountdown() {
   let now = new Date();
   if (now < targetDate) {
     let diff = targetDate - now;
@@ -23,22 +20,20 @@ function draw(){
     let minutes = floor((diff / (1000 * 60)) % 60);
     let seconds = floor((diff / 1000) % 60);
     countdownDiv.html(`Countdown to birthday:<br>${nf(hours, 2)}:${nf(minutes, 2)}:${nf(seconds, 2)}`);
-    background(0);
-    return;
-  } else {
+  } else if (!timerEnded) {
     countdownDiv.html("Let's celebrate!");
-    setTimeout(() => {
-      location.reload();
-    }, 2000); // wait 2 seconds before refresh
-    noLoop();
+    timerEnded = true;
+    setTimeout(() => location.reload(), 2000); // Reload to trigger fireworks
+  }
+}
+
+function draw() {
+  if (!timerEnded) {
+    background(0);
     return;
   }
 
-  // This block won't be reached on countdown, only after reload
-  if (!bgm.isPlaying()) {
-    bgm.loop();
-    bgm.setVolume(0.5);
-  }
+  countdownDiv.hide(); // Hide timer once animation starts
 
   colorMode(RGB);
   background(0, 25);
@@ -58,18 +53,18 @@ function draw(){
   text("Happy Birthday\nBirthday name🥰 Stay happy forever", width / 2, height / 2);
 }
 
-function mouseClicked(){
+function mouseClicked() {
   let f = new fireworks();
   f.firework = new particle(mouseX, mouseY, random(255), true);
   firework.push(f);
 }
 
-function particle(x, y, col, firework){
+function particle(x, y, col, firework) {
   this.opacity = 255;
   this.pos = createVector(x, y);
   this.col = col;
 
-  if (firework){
+  if (firework) {
     this.vel = createVector(0, random(-10, -2));
   } else {
     this.vel = p5.Vector.random2D();
@@ -78,72 +73,72 @@ function particle(x, y, col, firework){
 
   this.acc = createVector(0, -4);
 
-  this.show = function(){    
-    if (!firework){
+  this.show = function() {
+    if (!firework) {
       strokeWeight(2);
       stroke(this.col, 255, 255, this.opacity);
     } else {
       strokeWeight(4);
       stroke(this.col, 255, 255);
     }
-    point(this.pos.x, this.pos.y);         
+    point(this.pos.x, this.pos.y);
   }
 
-  this.applyForce = function(force){
-    this.acc.add(force);        
+  this.applyForce = function(force) {
+    this.acc.add(force);
   }
-
-  this.update = function(){
-    if (!firework){
-      this.vel.mult(0.99);
-      this.opacity -= 7;
-    }    
-    this.vel.add(this.acc);
-    this.pos.add(this.vel);
-    this.acc.mult(0);                
-  }                
-}
-
-function fireworks(){
-  this.firework = new particle(random(width), height - 10, random(255), true);
-  this.explode = false;
-  this.particles = []; 
 
   this.update = function() {
-    if (!this.explode){
+    if (!firework) {
+      this.vel.mult(0.99);
+      this.opacity -= 7;
+    }
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+  }
+}
+
+function fireworks() {
+  this.firework = new particle(random(width), height - 10, random(255), true);
+  this.explode = false;
+  this.particles = [];
+
+  this.update = function() {
+    if (!this.explode) {
       this.firework.applyForce(force);
       this.firework.show();
-      if (this.firework.vel.y >= 0){
+      if (this.firework.vel.y >= 0) {
         this.explode = true;
         this.explore();
       }
     }
 
-    for (let i = 0; i < this.particles.length; i++){
+    for (let i = 0; i < this.particles.length; i++) {
       this.particles[i].update();
-      this.particles[i].applyForce(force);       
+      this.particles[i].applyForce(force);
     }
 
-    for (let i = this.particles.length - 1; i >= 0; i--){
-      if (this.particles[i].opacity <= 1){
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      if (this.particles[i].opacity <= 1) {
         this.particles.splice(i, 1);
       }
-    }       
-  }  
+    }
+  }
 
-  this.show = function(){
+  this.show = function() {
     colorMode(HSB);
-    if (!this.explode){
+    if (!this.explode) {
       this.firework.update();
     }
-    for (let i = 0; i < this.particles.length; i++){
+    for (let i = 0; i < this.particles.length; i++) {
       this.particles[i].show();
-    }     
-  } 
+    }
+  }
 
   this.explore = function() {
-    for (let i = 0; i < 150; i++){
-      this.particles.push(new particle(this.firework.pos.x, this.firework.pos.y, random(255), false));   
-    }          
-  }  
+    for (let i = 0; i < 150; i++) {
+      this.particles.push(new particle(this.firework.pos.x, this.firework.pos.y, random(255), false));
+    }
+  }
 }
