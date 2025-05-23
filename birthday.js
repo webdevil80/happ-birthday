@@ -4,7 +4,7 @@ let force;
 let timerEnded = false;
 
 let now = new Date();
-let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 25, 0); // 10:15 PM today
+let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 25, 0); // 10:25 PM today
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -18,12 +18,13 @@ function draw() {
 
   if (!timerEnded) {
     let now = new Date();
-    if (now >= targetDate && !timerEnded) {
+    if (now >= targetDate) {
       timerEnded = true;
       countdownDiv.hide();
+      noLoop();  // Stop draw loop immediately
       setTimeout(() => {
-    location.reload();
-  }, 100); // Refresh once, shortly after hiding
+        location.reload();
+      }, 1000); // Reload after 1 second (adjust if needed)
       return;
     }
 
@@ -37,7 +38,7 @@ function draw() {
     return;
   }
 
-  // After countdown ends
+  // Fireworks animation after countdown ends
   if (frameCount % 20 === 0) {
     firework.push(new fireworks());
   }
@@ -59,6 +60,7 @@ function mouseClicked() {
   firework.push(f);
 }
 
+// particle() and fireworks() functions unchanged — same as before
 function particle(x, y, col, firework) {
   this.opacity = 255;
   this.pos = createVector(x, y);
