@@ -3,8 +3,12 @@ let firework = [];
 let force;
 let timerEnded = false;
 
-let now = new Date();
-let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 25, 0); // 10:25 PM today
+function getTargetDate() {
+  let now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 35, 0); // 10:35 PM today
+}
+
+let targetDate = getTargetDate();
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -18,24 +22,21 @@ function draw() {
 
   if (!timerEnded) {
     let now = new Date();
+
     if (now >= targetDate) {
       timerEnded = true;
       countdownDiv.hide();
-      noLoop();  // Stop draw loop immediately
-      setTimeout(() => {
-        location.reload();
-      }, 1000); // Reload after 1 second (adjust if needed)
-      return;
+      // No reload, just start fireworks
+    } else {
+      // Show countdown timer
+      let diff = targetDate - now;
+      let hours = nf(floor((diff / (1000 * 60 * 60)) % 24), 2);
+      let minutes = nf(floor((diff / (1000 * 60)) % 60), 2);
+      let seconds = nf(floor((diff / 1000) % 60), 2);
+
+      countdownDiv.html(`Countdown to birthday:<br>${hours}:${minutes}:${seconds}`);
+      return; // skip fireworks animation until timer ends
     }
-
-    // Show countdown
-    let diff = targetDate - now;
-    let hours = nf(floor((diff / (1000 * 60 * 60)) % 24), 2);
-    let minutes = nf(floor((diff / (1000 * 60)) % 60), 2);
-    let seconds = nf(floor((diff / 1000) % 60), 2);
-    countdownDiv.html(`Countdown to birthday:<br>${hours}:${minutes}:${seconds}`);
-
-    return;
   }
 
   // Fireworks animation after countdown ends
@@ -43,9 +44,13 @@ function draw() {
     firework.push(new fireworks());
   }
 
-  for (let i = 0; i < firework.length; i++) {
+  for (let i = firework.length - 1; i >= 0; i--) {
     firework[i].update();
     firework[i].show();
+
+    if (firework[i].particles.length === 0 && firework[i].explode) {
+      firework.splice(i, 1);
+    }
   }
 
   textSize(30);
@@ -60,7 +65,6 @@ function mouseClicked() {
   firework.push(f);
 }
 
-// particle() and fireworks() functions unchanged — same as before
 function particle(x, y, col, firework) {
   this.opacity = 255;
   this.pos = createVector(x, y);
@@ -116,12 +120,10 @@ function fireworks() {
       }
     }
 
-    for (let i = 0; i < this.particles.length; i++) {
+    for (let i = this.particles.length - 1; i >= 0; i--) {
       this.particles[i].update();
       this.particles[i].applyForce(force);
-    }
 
-    for (let i = this.particles.length - 1; i >= 0; i--) {
       if (this.particles[i].opacity <= 1) {
         this.particles.splice(i, 1);
       }
