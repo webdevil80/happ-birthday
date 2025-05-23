@@ -32,7 +32,7 @@ function draw() {
       let minutes = nf(floor((diff / (1000 * 60)) % 60), 2);
       let seconds = nf(floor((diff / 1000) % 60), 2);
 
-      countdownDiv.html(`Have a curious till 12 🤪<br>${hours}:${minutes}:${seconds}`);
+      countdownDiv.html(`Please wait: <br/>${hours}:${minutes}:${seconds}`);
       return;
     }
   }
