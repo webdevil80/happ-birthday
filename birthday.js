@@ -1,31 +1,24 @@
 let countdownDiv;
-let now = new Date();
-let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 15, 0); // 10:15 PM today
 let force;
 let firework = [];
 let timerEnded = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  force = createVector(0, 0.2);
-  background(0);
   countdownDiv = select('#timer');
-  setInterval(updateCountdown, 1000); // Call every second
+  setInterval(updateClock, 1000); // update every second
 }
 
-function updateCountdown() {
+function draw() {
+  background(0);
+}
+
+function updateClock() {
   let now = new Date();
-  if (now < targetDate) {
-    let diff = targetDate - now;
-    let hours = floor((diff / (1000 * 60 * 60)) % 24);
-    let minutes = floor((diff / (1000 * 60)) % 60);
-    let seconds = floor((diff / 1000) % 60);
-    countdownDiv.html(`Countdown to birthday:<br>${nf(hours, 2)}:${nf(minutes, 2)}:${nf(seconds, 2)}`);
-  } else if (!timerEnded) {
-    countdownDiv.html("Let's celebrate!");
-    timerEnded = true;
-    setTimeout(() => location.reload(), 2000); // Reload to trigger fireworks
-  }
+  let hours = nf(now.getHours(), 2);
+  let minutes = nf(now.getMinutes(), 2);
+  let seconds = nf(now.getSeconds(), 2);
+  countdownDiv.html(`Current Time: ${hours}:${minutes}:${seconds}`);
 }
 
 function draw() {
