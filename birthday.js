@@ -1,0 +1,140 @@
+let force;
+let firework = [];
+let targetDate = new Date("2025-05-24T00:00:00"); // Set your target date & time here
+let showFireworks = false;
+let countdownDiv;
+
+function setup(){
+  createCanvas(windowWidth, windowHeight);
+    force = createVector(0, 0.2);
+      background(0);
+
+        countdownDiv = createDiv('').style('font-size', '32px').style('color', 'white')
+                                     .style('text-align', 'center').style('position', 'absolute')
+                                                                  .style('width', '100%').style('top', '40%');
+                                                                  }
+
+                                                                  function mouseClicked(){
+                                                                    if (showFireworks) {
+                                                                        let f = new fireworks();
+                                                                            f.firework = new particle(mouseX, mouseY, random(255), true);
+                                                                                firework.push(f);
+                                                                                  }
+                                                                                  }
+
+                                                                                  function draw(){
+                                                                                    let now = new Date();
+                                                                                      if (now < targetDate) {
+                                                                                          let diff = targetDate - now;
+                                                                                              let hours = floor((diff / (1000 * 60 * 60)) % 24);
+                                                                                                  let minutes = floor((diff / (1000 * 60)) % 60);
+                                                                                                      let seconds = floor((diff / 1000) % 60);
+                                                                                                          countdownDiv.html(`Countdown to birthday:<br>${nf(hours, 2)}:${nf(minutes, 2)}:${nf(seconds, 2)}`);
+                                                                                                              background(0);
+                                                                                                                  return;
+                                                                                                                    } else if (!showFireworks) {
+                                                                                                                        showFireworks = true;
+                                                                                                                            countdownDiv.hide();
+                                                                                                                              }
+
+                                                                                                                                colorMode(RGB);
+                                                                                                                                  background(0, 25);
+
+                                                                                                                                    if (frameCount % 20 === 0) {
+                                                                                                                                        firework.push(new fireworks());
+                                                                                                                                          }
+
+                                                                                                                                            for (let i = 0; i < firework.length; i++) {
+                                                                                                                                                firework[i].update();
+                                                                                                                                                    firework[i].show();      
+                                                                                                                                                      }
+
+                                                                                                                                                        textSize(30);
+                                                                                                                                                          textAlign(CENTER);
+                                                                                                                                                            fill(255);
+                                                                                                                                                              text("Happy Birthday\nBirthday name🥰 Stay happy forever", width / 2, height / 2);
+                                                                                                                                                              }
+
+                                                                                                                                                              function particle(x, y, col, firework){
+                                                                                                                                                                this.opacity = 255;
+                                                                                                                                                                  this.pos = createVector(x, y);
+                                                                                                                                                                    this.col = col;
+
+                                                                                                                                                                      if (firework){
+                                                                                                                                                                          this.vel = createVector(0, random(-10, -2));
+                                                                                                                                                                            } else {
+                                                                                                                                                                                this.vel = p5.Vector.random2D();
+                                                                                                                                                                                    this.vel.mult(random(1, 6));
+                                                                                                                                                                                      }
+
+                                                                                                                                                                                        this.acc = createVector(0, -4);
+
+                                                                                                                                                                                          this.show = function(){    
+                                                                                                                                                                                              if (!firework){
+                                                                                                                                                                                                    strokeWeight(2);
+                                                                                                                                                                                                          stroke(this.col, 255, 255, this.opacity);
+                                                                                                                                                                                                              } else {
+                                                                                                                                                                                                                    strokeWeight(4);
+                                                                                                                                                                                                                          stroke(this.col, 255, 255);
+                                                                                                                                                                                                                              }
+                                                                                                                                                                                                                                  point(this.pos.x, this.pos.y);         
+                                                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                                                      this.applyForce = function(force){
+                                                                                                                                                                                                                                          this.acc.add(force);        
+                                                                                                                                                                                                                                            }
+
+                                                                                                                                                                                                                                              this.update = function(){
+                                                                                                                                                                                                                                                  if (!firework){
+                                                                                                                                                                                                                                                        this.vel.mult(0.99);
+                                                                                                                                                                                                                                                              this.opacity -= 7;
+                                                                                                                                                                                                                                                                  }    
+                                                                                                                                                                                                                                                                      this.vel.add(this.acc);
+                                                                                                                                                                                                                                                                          this.pos.add(this.vel);
+                                                                                                                                                                                                                                                                              this.acc.mult(0);                
+                                                                                                                                                                                                                                                                                }                
+                                                                                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                                                                                function fireworks(){
+                                                                                                                                                                                                                                                                                  this.firework = new particle(random(width), height - 10, random(255), true);
+                                                                                                                                                                                                                                                                                    this.explode = false;
+                                                                                                                                                                                                                                                                                      this.particles = []; 
+
+                                                                                                                                                                                                                                                                                        this.update = function() {
+                                                                                                                                                                                                                                                                                            if (!this.explode){
+                                                                                                                                                                                                                                                                                                  this.firework.applyForce(force);
+                                                                                                                                                                                                                                                                                                        this.firework.show();
+                                                                                                                                                                                                                                                                                                              if (this.firework.vel.y >= 0){
+                                                                                                                                                                                                                                                                                                                      this.explode = true;
+                                                                                                                                                                                                                                                                                                                              this.explore();
+                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                        }
+
+                                                                                                                                                                                                                                                                                                                                            for (let i = 0; i < this.particles.length; i++){
+                                                                                                                                                                                                                                                                                                                                                  this.particles[i].update();
+                                                                                                                                                                                                                                                                                                                                                        this.particles[i].applyForce(force);       
+                                                                                                                                                                                                                                                                                                                                                            }
+
+                                                                                                                                                                                                                                                                                                                                                                for (let i = this.particles.length - 1; i >= 0; i--){
+                                                                                                                                                                                                                                                                                                                                                                      if (this.particles[i].opacity <= 1){
+                                                                                                                                                                                                                                                                                                                                                                              this.particles.splice(i, 1);
+                                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                                        }       
+                                                                                                                                                                                                                                                                                                                                                                                          }  
+
+                                                                                                                                                                                                                                                                                                                                                                                            this.show = function(){
+                                                                                                                                                                                                                                                                                                                                                                                                colorMode(HSB);
+                                                                                                                                                                                                                                                                                                                                                                                                    if (!this.explode){
+                                                                                                                                                                                                                                                                                                                                                                                                          this.firework.update();
+                                                                                                                                                                                                                                                                                                                                                                                                              }
+                                                                                                                                                                                                                                                                                                                                                                                                                  for (let i = 0; i < this.particles.length; i++){
+                                                                                                                                                                                                                                                                                                                                                                                                                        this.particles[i].show();
+                                                                                                                                                                                                                                                                                                                                                                                                                            }     
+                                                                                                                                                                                                                                                                                                                                                                                                                              } 
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                this.explore = function() {
+                                                                                                                                                                                                                                                                                                                                                                                                                                    for (let i = 0; i < 150; i++){
+                                                                                                                                                                                                                                                                                                                                                                                                                                          this.particles.push(new particle(this.firework.pos.x, this.firework.pos.y, random(255), false));   
+                                                                                                                                                                                                                                                                                                                                                                                                                                              }          
+                                                                                                                                                                                                                                                                                                                                                                                                                                                }  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                }
