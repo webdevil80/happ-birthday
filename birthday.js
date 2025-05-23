@@ -1,5 +1,6 @@
 let countdownDiv;
-let targetDate = new Date(2025, 4, 23, 21, 58, 0); // May 23, 2025, 21:58:00 (local time)
+let now = new Date();
+let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 15, 0); // 10:15 PM today
 let force;
 let firework = [];
 let timerEnded = false;
