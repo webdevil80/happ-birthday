@@ -4,25 +4,30 @@
   <meta charset="UTF-8">
   <title>Birthday</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background: black;
-      color: white;
-      font-family: sans-serif;
-    }
-    #timer {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 24px;
-      text-align: center;
-      z-index: 10;
-    }
-  </style>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: black;
+    color: white;
+    font-family: sans-serif;
+  }
+
+  #timer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    text-align: center;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px 40px;
+    border-radius: 12px;
+    border: 2px solid white;
+  }
+</style>
 </head>
 <body>
   <div id="timer">Loading...</div>
