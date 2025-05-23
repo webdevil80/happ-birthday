@@ -1,41 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>    
+<head>
   <meta charset="UTF-8">
+  <title>Birthday</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Birthday Surprise</title>
   <style>
     body, html {
       margin: 0;
       padding: 0;
-      background: black;
       overflow: hidden;
+      background: black;
+      color: white;
       font-family: sans-serif;
     }
-
     #timer {
-      position: fixed;
-      top: 40%;
-      left: 0;
-      right: 0;
-      color: white;
-      font-size: 36px;
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
       text-align: center;
       z-index: 10;
     }
   </style>
 </head>
-<body 
-  onselectstart="return false" 
-  onpaste="return false" 
-  oncopy="return false" 
-  oncut="return false" 
-  ondrag="return false" 
-  ondrop="return false" 
-  oncontextmenu="return false">
-
+<body>
   <div id="timer">Loading...</div>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
   <script src="birthday.js"></script>
 </body>
