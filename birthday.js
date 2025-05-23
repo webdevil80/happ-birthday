@@ -18,7 +18,7 @@ function draw() {
 
   if (!timerEnded) {
     let now = new Date();
-    if (now >= targetDate) {
+    if (now >= targetDate && !timerEnded) {
       timerEnded = true;
       countdownDiv.hide();
       setTimeout(() => {
